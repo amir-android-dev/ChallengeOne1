@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ChallengeOne1</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="name_of_shopping_list">NAME OF SHOPPING LIST</string>
+    <string name="choose_a_color">CHOOSE A COLOR</string>
+    <string name="save">SAVE</string>
+    <string name="click_on_icon_to_change">CLICK ON ICON TO CHANGE</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="sort_alphabetical">Sort alphabetical</string>
+    <string name="sort_by_count">Sort by count</string>
+    <string name="things_to_get">Things to get</string>
+    <string name="already_bought_things">Already bought things</string>
+    <string name="your_article">YOUR ARTICLE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="shopping_list">SHOPPING LIST</string>
+    <string name="update">UPDATE</string>
+
+    <string-array name="delete_and_edit">
+        <item>Edit</item>
+        <item>Delete</item>
+
+    </string-array>
+</resources>

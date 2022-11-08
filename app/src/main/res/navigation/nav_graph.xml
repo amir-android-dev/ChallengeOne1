@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainShoppingListFragment">
+
+    <fragment
+        android:id="@+id/mainShoppingListFragment"
+        android:name="com.amir.challengeone1.fragment.MainShoppingListFragment"
+        android:label="fragment_main_shopping_list"
+        tools:layout="@layout/fragment_main_shopping_list">
+        <action
+            android:id="@+id/action_mainShoppingListFragment_to_createShoppingListFragment"
+            app:destination="@id/createShoppingListFragment" />
+        <action
+            android:id="@+id/action_mainShoppingListFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createShoppingListFragment"
+        android:name="com.amir.challengeone1.fragment.CreateShoppingListFragment"
+        android:label="fragment_create_shopping_list"
+        tools:layout="@layout/fragment_create_shopping_list">
+        <argument
+            android:name="id"
+            app:argType="java.util.UUID" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="icon"
+            app:argType="integer" />
+        <argument
+            android:name="color"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.amir.challengeone1.fragment.ArticleFragment"
+        android:label="fragment_article"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="id"
+            app:argType="java.util.UUID" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="icon"
+            app:argType="integer" />
+        <argument
+            android:name="color"
+            app:argType="integer" />
+
+    </fragment>
+</navigation>
