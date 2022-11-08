@@ -1,6 +1,6 @@
 package com.amir.challengeone1.fragment;
 
-import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_LIST;
+
 import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_MAIN;
 
 import android.annotation.SuppressLint;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.MenuProvider;
 import androidx.lifecycle.Lifecycle;
@@ -31,7 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.amir.challengeone1.ListServiceImpl;
-import com.amir.challengeone1.MainActivity;
+
 import com.amir.challengeone1.R;
 import com.amir.challengeone1.adapter.ShoppingListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,11 +43,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 public class MainShoppingListFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     ShoppingListAdapter shoppingListAdapter;
     ListServiceImpl listService;
-    List<ShoppingList> shoppingLists;
+
 
     FloatingActionButton fbMainList;
     RecyclerView rv;
@@ -65,7 +66,6 @@ public class MainShoppingListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_shopping_list, container, false);
     }
 
@@ -106,8 +106,6 @@ public class MainShoppingListFragment extends BaseFragment {
     }
 
     private List<ShoppingList> loadShoppingList() {
-//        String shoppingListInString = sharedPreferences.getString(SHARED_PREFERENCES_LIST, "");
-//     shoppingLists= Utilities.listOfShoppingListsFromString(shoppingListInString);
         return listService.shoppingLists(ListService.SortOrder.Alphabetical);
     }
 
@@ -178,6 +176,7 @@ public class MainShoppingListFragment extends BaseFragment {
 
     @SuppressLint("NotifyDataSetChanged")
     void sort() {
+       List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
             @Override
             public int compare(ShoppingList o1, ShoppingList o2) {
@@ -186,7 +185,7 @@ public class MainShoppingListFragment extends BaseFragment {
         });
         shoppingListAdapter.notifyDataSetChanged();
         for (ShoppingList shoppingList : loadShoppingList()) {
-            Log.e("LIST", shoppingList.getName());
+            Timber.e("NAME%s", shoppingList.getName());
         }
     }
 
@@ -198,9 +197,6 @@ public class MainShoppingListFragment extends BaseFragment {
         }
     };
 
-    //Sort alphabet
-    private void sortAlphabet() {
-        Collections.sort(shoppingLists, ShoppingListNameAZComparator);
-    }
+
 
 }
