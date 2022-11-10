@@ -18,11 +18,11 @@ public class BaseFragment extends Fragment {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
-    public void setupBackButtonOnToolbar(String title, Boolean setDiaplayhome) {
+    public void setupBackButtonOnToolbar(String title, Boolean serHomeDisplay) {
         MainActivity mainActivity = (MainActivity) requireActivity();
         ActionBar actionBar = mainActivity.getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(setDiaplayhome);
+            actionBar.setDisplayHomeAsUpEnabled(serHomeDisplay);
             actionBar.setTitle(title);
         }
     }
@@ -39,13 +39,18 @@ public class BaseFragment extends Fragment {
         return CreateShoppingListFragmentArgs.fromBundle(getArguments());
     }
 
-    //article
-    public ArticleFragmentArgs getDataFromShoppingListInFragmentArticle(){
-       return  ArticleFragmentArgs.fromBundle(getArguments());
 
+    //article
+    public ArticleFragmentArgs getDataFromShoppingListInFragmentArticle() {
+        return ArticleFragmentArgs.fromBundle(getArguments());
     }
 
-    public void goBackToMainFragment(){
+    public void navigateFromArticleFragmentToCreateShoppingList(UUID id, String name, int icon, int color) {
+        NavDirections action = ArticleFragmentDirections.actionArticleFragmentToCreateShoppingListFragment(id, name, icon, color);
+        Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    public void goBackToMainFragment() {
         Navigation.findNavController(requireView()).popBackStack();
     }
 

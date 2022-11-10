@@ -75,7 +75,7 @@ public class CreateShoppingListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
         randomIcon();
-        getAndSetData();
+        getAndSetDataFromMainShoppingListFragment();
         setupActionbar();
 
     }
@@ -136,7 +136,7 @@ public class CreateShoppingListFragment extends BaseFragment {
 
 
 
-    private void getAndSetData() {
+    private void getAndSetDataFromMainShoppingListFragment() {
         UUID id = getDataFromShoppingListFragment().getId();
         etTitle.setText(getDataFromShoppingListFragment().getName());
         ivIcon.setImageResource(getDataFromShoppingListFragment().getIcon());
@@ -154,6 +154,8 @@ public class CreateShoppingListFragment extends BaseFragment {
             }
         }
     }
+
+
 
     private void openColorPicker() {
         mDefaultColor = ContextCompat.getColor(requireContext(), R.color.purple_200);

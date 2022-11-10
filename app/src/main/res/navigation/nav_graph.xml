@@ -52,6 +52,9 @@
         <argument
             android:name="color"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_articleFragment_to_createShoppingListFragment"
+            app:destination="@id/createShoppingListFragment" />
 
     </fragment>
 </navigation>

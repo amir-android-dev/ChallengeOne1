@@ -17,6 +17,7 @@
     <string name="cancel">CANCEL</string>
     <string name="shopping_list">SHOPPING LIST</string>
     <string name="update">UPDATE</string>
+    <string name="edit_list">EDIT LIST</string>
 
     <string-array name="delete_and_edit">
         <item>Edit</item>

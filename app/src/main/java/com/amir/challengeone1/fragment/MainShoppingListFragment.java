@@ -160,7 +160,6 @@ public class MainShoppingListFragment extends BaseFragment {
                         displayToast(requireContext(), "alpha");
                         sort();
                         // sortAlphabet();
-
                         return true;
                     case R.id.action_sort_by_count:
                         displayToast(requireContext(), "count");

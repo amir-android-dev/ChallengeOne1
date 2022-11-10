@@ -231,8 +231,6 @@ public class ArticleFragment extends BaseFragment {
     }
 
 
-
-
     private List<ShoppingListEntry> unChecked() {
         entriesUnChecked = new ArrayList<>();
 
@@ -260,14 +258,18 @@ public class ArticleFragment extends BaseFragment {
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
+                menuInflater.inflate(R.menu.article_menu, menu);
             }
 
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case android.R.id.home:
                         goBackToMainFragment();
+                        return true;
+                    case R.id.action_go_to_create_shopping:
+                        navigateFromArticleFragmentToCreateShoppingList(getDataFromShoppingListInFragmentArticle().getId(), getDataFromShoppingListInFragmentArticle().getTitle(), getDataFromShoppingListInFragmentArticle().getIcon(), getDataFromShoppingListInFragmentArticle().getColor());
                         return true;
                 }
                 return false;
