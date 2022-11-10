@@ -114,12 +114,11 @@ public class CreateShoppingListFragment extends BaseFragment {
                 for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
                     if (shoppingList.getId().equals(id)) {
                         displayToast(requireContext(), "update");
+
                         listToUpdate.remove(shoppingList);
-                      //  editor.remove(SHARED_PREFERENCES_LIST);
+
                         String newList = Utilities.listOfShoppingListsToString(listToUpdate);
                         listService.editShoppingList(newList);
-//                        editor.putString(SHARED_PREFERENCES_LIST, newList);
-//                        editor.commit();
                         goBackToMainFragment();
                     }
                 }

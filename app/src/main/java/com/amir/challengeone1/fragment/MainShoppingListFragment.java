@@ -124,16 +124,13 @@ public class MainShoppingListFragment extends BaseFragment {
                         break;
                     case 1:
                         List<ShoppingList> listToDelete = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-                        int i = 0;
+
                         for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
                             if (shoppingList.getId().equals(id))
                                 listToDelete.remove(shoppingList);
                             String newList = Utilities.listOfShoppingListsToString(listToDelete);
                             listService.editShoppingList(newList);
                            shoppingListAdapter.getUpdateShoppingList(listToDelete);
-
-                            i++;
-
 
                         }
                         break;

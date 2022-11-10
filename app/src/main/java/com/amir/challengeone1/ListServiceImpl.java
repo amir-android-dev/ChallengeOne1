@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import timber.log.Timber;
+
 public class ListServiceImpl implements ListService {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -37,10 +39,10 @@ public class ListServiceImpl implements ListService {
     public void editShoppingList(String newUpdatedList) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(SHARED_PREFERENCES_LIST);
-        editor.putString(SHARED_PREFERENCES_LIST,newUpdatedList);
+        editor.putString(SHARED_PREFERENCES_LIST, newUpdatedList);
         editor.commit();
-
     }
+
 
     @Nullable
     @Override
@@ -48,10 +50,6 @@ public class ListServiceImpl implements ListService {
         return null;
     }
 
-    public List<ShoppingList> loadShoppingList() {
-        String shoppingListInString = sharedPreferences.getString(SHARED_PREFERENCES_LIST, "");
-        return Utilities.listOfShoppingListsFromString(shoppingListInString);
-    }
 
     @Override
     public void add(String name, int icon, int color) {
@@ -65,24 +63,9 @@ public class ListServiceImpl implements ListService {
         editor.putString(SHARED_PREFERENCES_LIST, listToString);
         editor.commit();
 
-        Log.e("inside color", "onOk: " + "" + name + "" + icon + "" + color);
+        Timber.e("onOk: " + "" + name + "" + icon + "" + color);
     }
 
-    public void addShoppingListWithSecondConstrcutor(UUID id, List<ShoppingListEntry> unchecked, List<ShoppingListEntry> checked) {
-        List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
-        for (ShoppingList shoppingList : list) {
-            if (shoppingList.getId() == id) {
-                list.remove(shoppingList);
-                list.add(new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor(), unchecked, checked));
-            }
-        }
-        String listInString = Utilities.listOfShoppingListsToString(list);
-
-        editor = sharedPreferences.edit();
-        editor.putString(SHARED_PREFERENCES_LIST, listInString);
-        editor.commit();
-
-    }
 
     @Override
     public void remove(UUID listId) {
@@ -91,26 +74,24 @@ public class ListServiceImpl implements ListService {
 
         for (ShoppingList shoppingList : lists) {
             if (shoppingList.getId().equals(listId)) {
-                ShoppingList shoppingList1 = new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor());
-                Log.e("RAMOVE", "HUURRAA");
+
+                ShoppingList shoppingList1 = new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor(), shoppingList.getCheckedEntries(), shoppingList.getUncheckedEntries());
+                Timber.tag("RAMOVE").e("HUURRAA");
                 lists.remove(shoppingList1);
+
 
             }
         }
     }
 
-    //Saves the shopping list.
-//This function does nothing if `listId` is invalid or `name` is empty.
-//Params:
-//listId – The id of the list that should have the entry added.
-//name – The name of the entry.
+
     @Override
     public void addEntry(UUID listId, String name) {
         List<ShoppingList> lists = shoppingLists(SortOrder.Alphabetical);
 
         for (ShoppingList shoppingList : lists) {
             if (!listId.equals(shoppingList.getId()) && name.isEmpty()) {
-                Log.e("ID_OR_NAME", "a proble, with id or name");
+                Timber.tag("ID_OR_NAME").e("a proble, with id or name");
             } else {
                 List<ShoppingListEntry> unchecked = new ArrayList<>();
                 List<ShoppingListEntry> checked = new ArrayList<>();
@@ -151,20 +132,5 @@ public class ListServiceImpl implements ListService {
 
     }
 
-//    public void addShoppingListWithSecondConstrcutor(UUID id, String name, int icon, int color, List<ShoppingListEntry> unchecked, List<ShoppingListEntry> checked) {
-//        List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
-//        for (ShoppingList shoppingList : list) {
-//            if (shoppingList.getId() == id) {
-//                list.remove(shoppingList);
-//                list.add(new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(),shoppingList.getColor(), unchecked, checked));
-//            }
-//        }
-//        list.add(new ShoppingList(id, name, icon, color, unchecked, checked));
-//        String listInString = Utilities.listOfShoppingListsToString(list);
-//
-//        editor = sharedPreferences.edit();
-//        editor.putString(SHARED_PREFERENCES_LIST, listInString);
-//        editor.commit();
-//
-//    }
+
 }
