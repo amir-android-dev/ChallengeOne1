@@ -7,23 +7,30 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
 import com.amir.challengeone1.fragment.MainShoppingListFragmentDirections;
+import com.tailoredapps.codingschool.challenge1.ListService;
 import com.tailoredapps.codingschool.challenge1.ShoppingList;
 import com.tailoredapps.codingschool.challenge1.Utilities;
 
+import java.util.Base64;
 import java.util.List;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHolder> {
@@ -34,13 +41,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
     Callback callback;
     List<ShoppingList> shoppingLists;
     private final Context context;
-    ShoppingListAdapter adapter;
-
+   SharedPreferences sharedPreferences;
+   ListServiceImpl listService;
 
     public ShoppingListAdapter(List<ShoppingList> shoppingLists, Context context, Callback callback) {
         this.shoppingLists = shoppingLists;
         this.context = context;
         this.callback = callback;
+
     }
 
 
@@ -60,7 +68,21 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
             holder.tvCategoryName.setText(shoppingList.getName());
             holder.ivIcon.setImageResource(shoppingList.getIcon());
             holder.ivIcon.setColorFilter(shoppingList.getColor());
-            holder.tvCountOfUndone.setText(shoppingList.getId().toString());
+            Bundle bundle = new Bundle();
+
+         //  String i = bundle.getInt("SIZE");
+       //    holder.tvCountOfUndone.setText(String.valueOf(bundle.getInt("SIZE")));
+           holder.tvCountOfUndone.setText(String.valueOf(shoppingList.getUncheckedEntries().size()));
+//            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_MAIN,Context.MODE_PRIVATE);
+//            listService = new ListServiceImpl(sharedPreferences);
+//            List<ShoppingList>shoppingLists= listService.shoppingLists(ListService.SortOrder.Alphabetical);
+//
+//            for (ShoppingList list:shoppingLists){
+//                if(list.getId().equals(shoppingList.getId())){
+//
+//                }
+//            }
+
         } catch (NullPointerException | Resources.NotFoundException e) {
             e.printStackTrace();
         }
@@ -83,8 +105,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
             }
         });
 
-
     }
+
 
     @Override
     public int getItemCount() {

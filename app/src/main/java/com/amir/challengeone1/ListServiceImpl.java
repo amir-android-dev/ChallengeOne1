@@ -117,6 +117,7 @@ public class ListServiceImpl implements ListService {
     public void uncheckAllEntries(UUID listId) {
 
     }
+
     private void updatedShoppingLists(List<ShoppingList> shoppingLists) {
         String shoppingListsString = Utilities.listOfShoppingListsToString(shoppingLists);
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.lifecycle.Lifecycle;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,6 +92,7 @@ public class ArticleFragment extends BaseFragment {
         setupAdapterForCheckedArticle();
         setupAdapterForUnCheckedArticle();
         setupActionbar();
+      //  sendUncheckedSize();
 
 
     }
@@ -214,6 +216,13 @@ public class ArticleFragment extends BaseFragment {
         icon = getDataFromShoppingListInFragmentArticle().getIcon();
         color = getDataFromShoppingListInFragmentArticle().getColor();
     }
+
+//    private void sendUncheckedSize() {
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("SIZE", 5);
+//        Navigation.findNavController(requireView()).navigate(R.id.action_articleFragment_to_createShoppingListFragment, bundle);
+//
+//    }
 
 
     void dialog() {

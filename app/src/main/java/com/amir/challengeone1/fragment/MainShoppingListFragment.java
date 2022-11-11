@@ -20,7 +20,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -141,6 +140,8 @@ public class MainShoppingListFragment extends BaseFragment {
         builder.show();
     }
 
+
+
     private void setupActionBar() {
         setupBackButtonOnToolbar(getResources().getString(R.string.shopping_list), false);
 
@@ -158,11 +159,12 @@ public class MainShoppingListFragment extends BaseFragment {
                 switch (menuItem.getItemId()) {
                     case R.id.action_sort_by_alphabet:
                         displayToast(requireContext(), "alpha");
-                        sort();
+                        sortAlphabetical();
                         // sortAlphabet();
                         return true;
                     case R.id.action_sort_by_count:
                         displayToast(requireContext(), "count");
+                        sortCount();
                         return true;
                 }
                 return false;
@@ -170,8 +172,8 @@ public class MainShoppingListFragment extends BaseFragment {
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    void sort() {
+
+    void sortAlphabetical() {
        List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
             @Override
@@ -179,13 +181,31 @@ public class MainShoppingListFragment extends BaseFragment {
                 return o1.getName().compareTo(o2.getName());
             }
         });
+
+        for (ShoppingList shoppingList : loadShoppingList()) {
+            Timber.e("NAME%s", shoppingList.getName());
+        }
+
+        shoppingListAdapter.getUpdateShoppingList(shoppingLists);
+    }
+
+    void sortCount() {
+        List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+        Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
+            @Override
+            public int compare(ShoppingList o1, ShoppingList o2) {
+                return String.valueOf(o1.getUncheckedEntries().size()).compareTo(String.valueOf(o2.getUncheckedEntries().size()));
+            }
+        });
         shoppingListAdapter.notifyDataSetChanged();
         for (ShoppingList shoppingList : loadShoppingList()) {
             Timber.e("NAME%s", shoppingList.getName());
         }
+
+        shoppingListAdapter.getUpdateShoppingList(shoppingLists);
     }
 
-    //Comparator to sort alphabetical
+        //Comparator to sort alphabetical
     public static Comparator<ShoppingList> ShoppingListNameAZComparator = new Comparator<ShoppingList>() {
         @Override
         public int compare(ShoppingList shoppingList1, ShoppingList shoppingList2) {

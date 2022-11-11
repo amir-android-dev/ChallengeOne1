@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mainShoppingListFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
+        <argument
+            android:name="countOfUncheck"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/createShoppingListFragment"
@@ -55,6 +58,9 @@
         <action
             android:id="@+id/action_articleFragment_to_createShoppingListFragment"
             app:destination="@id/createShoppingListFragment" />
+        <action
+            android:id="@+id/action_articleFragment_to_mainShoppingListFragment"
+            app:destination="@id/mainShoppingListFragment" />
 
     </fragment>
 </navigation>

@@ -33,6 +33,10 @@ public class BaseFragment extends Fragment {
         Navigation.findNavController(requireView()).navigate(action);
     }
 
+    public ArticleFragmentArgs getDataFromArticleFragment() {
+        return ArticleFragmentArgs.fromBundle(getArguments());
+    }
+
 
     //create
     public CreateShoppingListFragmentArgs getDataFromShoppingListFragment() {
@@ -47,6 +51,11 @@ public class BaseFragment extends Fragment {
 
     public void navigateFromArticleFragmentToCreateShoppingList(UUID id, String name, int icon, int color) {
         NavDirections action = ArticleFragmentDirections.actionArticleFragmentToCreateShoppingListFragment(id, name, icon, color);
+        Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    public void navigateFromArticleFragmentToMainShoppingListFragment(int ucheckSize) {
+        NavDirections action = ArticleFragmentDirections.actionArticleFragmentToMainShoppingListFragment(ucheckSize);
         Navigation.findNavController(requireView()).navigate(action);
     }
 
