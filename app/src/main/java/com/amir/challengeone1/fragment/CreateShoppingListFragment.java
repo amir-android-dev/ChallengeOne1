@@ -107,22 +107,32 @@ public class CreateShoppingListFragment extends BaseFragment {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!etTitle.getText().toString().isEmpty()) {
+                    listService.changeName(getDataFromShoppingListFragment().getId(), etTitle.getText().toString());
+                    listService.changeIcon(getDataFromShoppingListFragment().getId(),randomIcon());
+                    listService.changeColor(getDataFromShoppingListFragment().getId(),mDefaultColor);
 
-                UUID id = getDataFromShoppingListFragment().getId();
-                List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-
-                for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
-                    if (shoppingList.getId().equals(id)) {
-                        displayToast(requireContext(), "update");
-
-                        listToUpdate.remove(shoppingList);
-
-                        String newList = Utilities.listOfShoppingListsToString(listToUpdate);
-                        listService.editShoppingList(newList);
-                        goBackToMainFragment();
-                    }
+                    goBackToMainFragment();
+                }else{
+                    displayToast(requireContext(),"Please Fill up the List name!");
                 }
-                listService.add(etTitle.getText().toString(), randomIcon(), mDefaultColor);
+
+
+//                UUID id = getDataFromShoppingListFragment().getId();
+//                List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+//
+//                for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
+//                    if (shoppingList.getId().equals(id)) {
+//                        displayToast(requireContext(), "update");
+//
+//                        listToUpdate.remove(shoppingList);
+//
+//                        String newList = Utilities.listOfShoppingListsToString(listToUpdate);
+//                        listService.editShoppingList(newList);
+//                        goBackToMainFragment();
+//                    }
+//                }
+//                listService.add(etTitle.getText().toString(), randomIcon(), mDefaultColor);
             }
         });
 

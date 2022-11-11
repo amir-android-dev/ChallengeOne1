@@ -99,8 +99,8 @@ public class ListServiceImpl implements ListService {
             }
         }
 
-
     }
+
 
     @Override
     public void checkEntry(UUID listId, int row) {
@@ -109,6 +109,7 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public void uncheckEntry(UUID listId, int row) {
+        editor = sharedPreferences.edit();
 
     }
 
@@ -116,19 +117,47 @@ public class ListServiceImpl implements ListService {
     public void uncheckAllEntries(UUID listId) {
 
     }
+    private void updatedShoppingLists(List<ShoppingList> shoppingLists) {
+        String shoppingListsString = Utilities.listOfShoppingListsToString(shoppingLists);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(SHARED_PREFERENCES_LIST, shoppingListsString);
+        editor.commit();
+    }
 
     @Override
     public void changeName(UUID listId, String name) {
+        List<ShoppingList> shops = shoppingLists(SortOrder.Alphabetical);
+
+
+        for (ShoppingList shoppingList : shops) {
+            if (listId.equals(shoppingList.getId())) {
+                shoppingList.setName(name);
+            }
+        }
+        updatedShoppingLists(shops);
 
     }
 
     @Override
     public void changeIcon(UUID listId, int icon) {
-
+        List<ShoppingList> shops = shoppingLists(SortOrder.Alphabetical);
+        for (ShoppingList shoppingList : shops) {
+            if (listId.equals(shoppingList.getId())) {
+                shoppingList.setIcon(icon);
+            }
+        }
+        updatedShoppingLists(shops);
     }
 
     @Override
     public void changeColor(UUID listId, int color) {
+        List<ShoppingList> shops = shoppingLists(SortOrder.Alphabetical);
+        for (ShoppingList shoppingList : shops) {
+            if (listId.equals(shoppingList.getId())) {
+                shoppingList.setColor(color);
+            }
+        }
+        updatedShoppingLists(shops);
 
     }
 

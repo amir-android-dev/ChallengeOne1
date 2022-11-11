@@ -137,7 +137,29 @@ public class ArticleFragment extends BaseFragment {
     }
 
 
+//    private void setupAdapterForUnCheckedArticle() {
+//        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
+//
+//            @Override
+//            public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
+//                for (int i = 0; i < entriesUnChecked.size(); i++) {
+//                    if (shoppingListEntry.isChecked()) {
+//                        entriesUnChecked.remove(i);
+//                        shoppingListEntry.setChecked(true);
+//                        entriesChecked.add(shoppingListEntry);
+//                        runnableUnchecked(i);
+//                        break;
+//                    }
+//
+//                }
+//            }
+//        });
+//        rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+//        rvNotChecked.setAdapter(adapterUnchecked);
+//    }
+
     private void setupAdapterForUnCheckedArticle() {
+        List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
 
             @Override
@@ -148,14 +170,41 @@ public class ArticleFragment extends BaseFragment {
                         shoppingListEntry.setChecked(true);
                         entriesChecked.add(shoppingListEntry);
                         runnableUnchecked(i);
+
                         break;
                     }
+
 
                 }
             }
         });
         rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         rvNotChecked.setAdapter(adapterUnchecked);
+    }
+
+
+    private List<ShoppingListEntry> unChecked() {
+        entriesUnChecked = new ArrayList<>();
+
+        List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+
+        for (ShoppingList shoppingList : list) {
+            if (shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId()))
+                entriesUnChecked.addAll(shoppingList.getUncheckedEntries());
+        }
+
+        return entriesUnChecked;
+    }
+
+    private List<ShoppingListEntry> checked() {
+        entriesChecked = new ArrayList<>();
+        List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+
+        for (ShoppingList shoppingList : list) {
+            if (shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId()))
+                entriesChecked.addAll(shoppingList.getCheckedEntries());
+        }
+        return entriesChecked;
     }
 
 
@@ -228,27 +277,6 @@ public class ArticleFragment extends BaseFragment {
         }
 
         editor.commit();
-    }
-
-
-    private List<ShoppingListEntry> unChecked() {
-        entriesUnChecked = new ArrayList<>();
-
-        List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-
-
-        for (ShoppingList shoppingList : list) {
-            if (shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId()))
-                entriesUnChecked.addAll(shoppingList.getUncheckedEntries());
-        }
-
-        return entriesUnChecked;
-    }
-
-    private List<ShoppingListEntry> checked() {
-        entriesChecked = new ArrayList<>();
-        entriesChecked.add(new ShoppingListEntry(UUID.randomUUID(), "milk", true));
-        return entriesChecked;
     }
 
 
