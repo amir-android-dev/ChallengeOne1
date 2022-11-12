@@ -6,18 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amir.challengeone1.R;
-import com.google.android.material.radiobutton.MaterialRadioButton;
+
 import com.google.android.material.textview.MaterialTextView;
-import com.tailoredapps.codingschool.challenge1.ShoppingList;
+
 import com.tailoredapps.codingschool.challenge1.ShoppingListEntry;
 
 import java.util.List;
@@ -37,7 +35,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<MArticleViewHolder> {
         this.entryList = entryList;
         this.callBack = callBack;
     }
-
 
 
     @NonNull
@@ -69,13 +66,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<MArticleViewHolder> {
                 }
             }
         });
-
-
     }
 
     public void getUpdateEntry(List<ShoppingListEntry> entries) {
         entryList = entries;
-
 
     }
 

@@ -28,4 +28,5 @@
     <string name="create_a_new_list">ERSTELLE EINE LISTE</string>
     <string name="are_you_sure">Bist Du sicher?</string>
     <string name="fill_up_name">Bitte füll den Namen der Einkaufsliste aus!</string>
+    <string name="is_saved">ist gespeichert</string>
 </resources>

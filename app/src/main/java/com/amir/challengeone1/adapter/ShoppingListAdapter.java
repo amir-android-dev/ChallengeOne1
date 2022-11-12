@@ -1,36 +1,23 @@
 package com.amir.challengeone1.adapter;
 
-import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_LIST;
-import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_MAIN;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.helper.widget.Carousel;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
 import com.amir.challengeone1.fragment.MainShoppingListFragmentDirections;
-import com.tailoredapps.codingschool.challenge1.ListService;
 import com.tailoredapps.codingschool.challenge1.ShoppingList;
-import com.tailoredapps.codingschool.challenge1.Utilities;
 
-import java.util.Base64;
 import java.util.List;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHolder> {
@@ -41,14 +28,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
     Callback callback;
     List<ShoppingList> shoppingLists;
     private final Context context;
-   SharedPreferences sharedPreferences;
-   ListServiceImpl listService;
+
 
     public ShoppingListAdapter(List<ShoppingList> shoppingLists, Context context, Callback callback) {
         this.shoppingLists = shoppingLists;
         this.context = context;
         this.callback = callback;
-
     }
 
 
@@ -68,20 +53,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
             holder.tvCategoryName.setText(shoppingList.getName());
             holder.ivIcon.setImageResource(shoppingList.getIcon());
             holder.ivIcon.setColorFilter(shoppingList.getColor());
-            Bundle bundle = new Bundle();
 
-         //  String i = bundle.getInt("SIZE");
-       //    holder.tvCountOfUndone.setText(String.valueOf(bundle.getInt("SIZE")));
-           holder.tvCountOfUndone.setText(String.valueOf(shoppingList.getUncheckedEntries().size()));
-//            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_MAIN,Context.MODE_PRIVATE);
-//            listService = new ListServiceImpl(sharedPreferences);
-//            List<ShoppingList>shoppingLists= listService.shoppingLists(ListService.SortOrder.Alphabetical);
-//
-//            for (ShoppingList list:shoppingLists){
-//                if(list.getId().equals(shoppingList.getId())){
-//
-//                }
-//            }
+            holder.tvCountOfUndone.setText(String.valueOf(shoppingList.getUncheckedEntries().size()));
+
 
         } catch (NullPointerException | Resources.NotFoundException e) {
             e.printStackTrace();
@@ -105,18 +79,22 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<MyShoppingViewHold
             }
         });
 
+        if ((position % 2) == 0) {
+            holder.constraintLayout.setBackgroundColor(context.getResources().getColor(R.color.blue_100));
+            holder.tvCategoryName.setTextColor(context.getResources().getColor(R.color.blue_900));
+            holder.tvCountOfUndone.setTextColor(context.getResources().getColor(R.color.blue_900));
+        }else{
+            holder.constraintLayout.setBackgroundColor(context.getResources().getColor(R.color.blue_900));
+            holder.tvCategoryName.setTextColor(context.getResources().getColor(R.color.blue_100));
+            holder.tvCountOfUndone.setTextColor(context.getResources().getColor(R.color.blue_100));
+        }
+
     }
 
 
     @Override
     public int getItemCount() {
         return shoppingLists.size();
-    }
-
-    private List<ShoppingList> loadShoppingList() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_MAIN, Context.MODE_PRIVATE);
-        String shoppingListInString = sharedPreferences.getString(SHARED_PREFERENCES_LIST, "");
-        return Utilities.listOfShoppingListsFromString(shoppingListInString);
     }
 
 
@@ -134,7 +112,7 @@ class MyShoppingViewHolder extends RecyclerView.ViewHolder {
     TextView tvCategoryName;
     TextView tvCountOfUndone;
     CardView cv;
-    ShoppingListAdapter adapter;
+    ConstraintLayout constraintLayout;
 
     public MyShoppingViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -142,6 +120,7 @@ class MyShoppingViewHolder extends RecyclerView.ViewHolder {
         ivIcon = itemView.findViewById(R.id.iv_main_list_item);
         tvCategoryName = itemView.findViewById(R.id.tv_title_main_list_item);
         tvCountOfUndone = itemView.findViewById(R.id.tv_count_main_list_item);
+        constraintLayout = itemView.findViewById(R.id.constraint_main_list_item);
 
 
     }

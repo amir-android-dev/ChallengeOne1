@@ -21,8 +21,10 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="create_a_new_list">Create a new List</string>
-    <string name="are_you_sure">\"Are you sure? \n \"</string>
+    <string name="are_you_sure">Are you sure? </string>
     <string name="fill_up_name">Please Fill up the Shopping list name!</string>
+    <string name="is_saved">is saved</string>
+    <string name="todo">todo</string>
 
     <string-array name="delete_and_edit">
         <item>Edit</item>

@@ -91,6 +91,7 @@ public class MainShoppingListFragment extends BaseFragment {
     private void setupShoppingListAdapter() {
 
         shoppingListAdapter = new ShoppingListAdapter(loadShoppingList(), requireContext(), new ShoppingListAdapter.Callback() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void shoppingListClicked(ShoppingList shoppingList) {
                 setupEditDeleteDialog(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor());
@@ -195,7 +196,7 @@ public class MainShoppingListFragment extends BaseFragment {
     }
 
 
-    void sortAlphabetical() {
+   private void sortAlphabetical() {
         List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
             @Override
@@ -211,7 +212,8 @@ public class MainShoppingListFragment extends BaseFragment {
         shoppingListAdapter.getUpdateShoppingList(shoppingLists);
     }
 
-    void sortCount() {
+    @SuppressLint("NotifyDataSetChanged")
+    private void sortCount() {
         List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
             @Override
@@ -223,7 +225,6 @@ public class MainShoppingListFragment extends BaseFragment {
         for (ShoppingList shoppingList : loadShoppingList()) {
             Timber.e("NAME%s", shoppingList.getName());
         }
-
         shoppingListAdapter.getUpdateShoppingList(shoppingLists);
     }
 

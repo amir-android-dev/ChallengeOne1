@@ -1,6 +1,6 @@
 package com.amir.challengeone1.fragment;
 
-import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_LIST;
+
 import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_MAIN;
 
 import android.annotation.SuppressLint;
@@ -17,14 +17,14 @@ import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 
 import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
@@ -35,11 +35,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.tailoredapps.codingschool.challenge1.ListService;
 import com.tailoredapps.codingschool.challenge1.ShoppingList;
 import com.tailoredapps.codingschool.challenge1.ShoppingListEntry;
-import com.tailoredapps.codingschool.challenge1.Utilities;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import timber.log.Timber;
 
 
 public class ArticleFragment extends BaseFragment {
@@ -48,7 +50,6 @@ public class ArticleFragment extends BaseFragment {
     RecyclerView rvNotChecked;
 
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     ShoppingListEntry shoppingListEntry;
     ListServiceImpl listService;
 
@@ -92,7 +93,7 @@ public class ArticleFragment extends BaseFragment {
         setupAdapterForCheckedArticle();
         setupAdapterForUnCheckedArticle();
         setupActionbar();
-        //  sendUncheckedSize();
+
 
 
     }
@@ -124,16 +125,14 @@ public class ArticleFragment extends BaseFragment {
 
                 for (int i = 0; i < entriesChecked.size(); i++) {
                     if (!shoppingListEntry.isChecked() && shoppingListEntry.getId().equals(entriesChecked.get(i).getId())) {
-//                        entriesUnChecked.add(shoppingListEntry);
-//                        shoppingListEntry.setChecked(false);
-                        // shoppingListEntry.setChecked(false);
+
                         listService.mCheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
                         adapterChecked.getUpdateEntry(entriesChecked);
                         adapterUnchecked.getUpdateEntry(entriesUnChecked);
                         runnableUnchecked();
-                      //  runnableChecked(i);
 
-                        break;
+
+                      //  break;
                     }
 
                 }
@@ -145,9 +144,7 @@ public class ArticleFragment extends BaseFragment {
     }
 
     private void setupAdapterForUnCheckedArticle() {
-        //   List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
 
-        //  editor = sharedPreferences.edit();
         adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
 
             @Override
@@ -159,31 +156,14 @@ public class ArticleFragment extends BaseFragment {
 
                 for (int i = 0; i < entriesUnChecked.size(); i++) {
                     if (shoppingListEntry.isChecked() && shoppingListEntry.getId().equals(entriesUnChecked.get(i).getId())) {
-//                        entriesChecked.add(shoppingListEntry);
-//                        shoppingListEntry.setChecked(true);
+
                         listService.mUncheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
                         adapterUnchecked.getUpdateEntry(entriesUnChecked);
                         adapterChecked.getUpdateEntry(entriesChecked);
-
                         runnableUnchecked();
-                        break;
-
-                        //                        for(ShoppingList shoppingList:list){
-//                            if(shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId())){
-//                                entriesUnChecked.remove(i);
-//                                shoppingList.setUncheckedEntries(entriesUnChecked);
-//                                shoppingList.setCheckedEntries(entriesChecked);
-//                              String shopInString = Utilities.listOfShoppingListsToString(list);
-//                                editor.putString(SHARED_PREFERENCES_LIST,shopInString);
-//                            }
-//                            editor.commit();
-//
-//                        }
-
+                      //  break;
                     }
-
                 }
-
             }
         });
         rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -194,68 +174,13 @@ public class ArticleFragment extends BaseFragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void run() {
-
-//                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
-//                adapterUnchecked.notifyItemChanged(i);
-                //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
                 adapterChecked.notifyDataSetChanged();
-                adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
-
+                adapterUnchecked.notifyDataSetChanged();
             }
         });
     }
 
-//    public void runnableUnchecked(int i) {
-//        rvChecked.post(new Runnable() {
-//            @SuppressLint("NotifyDataSetChanged")
-//            @Override
-//            public void run() {
-//                adapterUnchecked.notifyItemRemoved(i);
-////                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
-////                adapterUnchecked.notifyItemChanged(i);
-//                //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
-//                adapterChecked.notifyDataSetChanged();
-//                //        adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
-//
-//            }
-//        });
-//    }
 
-    public void runnableChecked(int i) {
-        rvChecked.post(new Runnable() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void run() {
-                adapterChecked.notifyItemRemoved(i);
-                //    adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
-                //   adapterChecked.notifyItemChanged(i);
-                adapterChecked.notifyDataSetChanged();
-                //adapterUnchecked.notifyItemRangeChanged(i, entriesUnChecked.size());
-                adapterUnchecked.notifyDataSetChanged();  //   it makes duplicate after removing
-            }
-        });
-    }
-
-    //    private void setupAdapterForUnCheckedArticle() {
-//        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
-//
-//            @Override
-//            public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
-//                for (int i = 0; i < entriesUnChecked.size(); i++) {
-//                    if (shoppingListEntry.isChecked()) {
-//                        entriesUnChecked.remove(i);
-//                        shoppingListEntry.setChecked(true);
-//                        entriesChecked.add(shoppingListEntry);
-//                        runnableUnchecked(i);
-//                        break;
-//                    }
-//
-//                }
-//            }
-//        });
-//        rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-//        rvNotChecked.setAdapter(adapterUnchecked);
-//    }
     private List<ShoppingListEntry> unChecked() {
         entriesUnChecked = new ArrayList<>();
 
@@ -265,7 +190,6 @@ public class ArticleFragment extends BaseFragment {
             if (shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId()))
                 entriesUnChecked.addAll(shoppingList.getUncheckedEntries());
         }
-
         return entriesUnChecked;
     }
 
@@ -320,9 +244,9 @@ public class ArticleFragment extends BaseFragment {
                     shoppingListEntry = new ShoppingListEntry(UUID.randomUUID(), name, false);
                     entriesUnChecked.add(shoppingListEntry);
                     listService.mAddEntry(getDataFromShoppingListInFragmentArticle().getId(), entriesUnChecked);
-                    //   addEntry();
 
-                    displayToast(requireContext(), name);
+
+                    displayToast(requireContext(), name+"  "+getString(R.string.is_saved));
 
                     dialog.dismiss();
                     adapterUnchecked.notifyDataSetChanged();
@@ -332,24 +256,6 @@ public class ArticleFragment extends BaseFragment {
         dialog.create();
         dialog.show();
     }
-
-//
-//    private void addEntry() {
-//
-//        editor = sharedPreferences.edit();
-//        List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-//
-//        for (ShoppingList shoppingList : listToUpdate) {
-//            if (shoppingList.getId().equals(id)) {
-//                shoppingList.setUncheckedEntries(entriesUnChecked);
-//
-//                String shopToString = Utilities.listOfShoppingListsToString(listToUpdate);
-//                editor.putString(SHARED_PREFERENCES_LIST, shopToString);
-//            }
-//        }
-//
-//        editor.commit();
-//    }
 
 
     private void setupActionbar() {
@@ -376,22 +282,19 @@ public class ArticleFragment extends BaseFragment {
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
-
-
 }
 
 class WrapContentLinearLayoutManager extends LinearLayoutManager {
     public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
-
     //... constructor
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
-            Log.e("TAG", "meet a IOOBE in RecyclerView");
+            Timber.tag("TAG").e("meet a IOOBE in RecyclerView");
         }
     }
 

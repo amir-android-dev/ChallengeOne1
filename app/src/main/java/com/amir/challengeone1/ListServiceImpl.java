@@ -2,23 +2,15 @@ package com.amir.challengeone1;
 
 
 import static com.amir.challengeone1.Constants.SHARED_PREFERENCES_LIST;
-
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import com.tailoredapps.codingschool.challenge1.ListService;
 import com.tailoredapps.codingschool.challenge1.ShoppingList;
 import com.tailoredapps.codingschool.challenge1.ShoppingListEntry;
 import com.tailoredapps.codingschool.challenge1.Utilities;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 import timber.log.Timber;
 
