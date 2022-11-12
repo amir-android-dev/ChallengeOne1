@@ -26,10 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tailoredapps.codingschool.challenge1.ListService;
 import com.tailoredapps.codingschool.challenge1.ShoppingList;
-import com.tailoredapps.codingschool.challenge1.Utilities;
+
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -42,15 +43,15 @@ public class CreateShoppingListFragment extends BaseFragment {
     int mDefaultColor;
     SharedPreferences sharedPreferences;
     ListServiceImpl listService;
-    int url;
+    int urlOfIcon;
 
 
     AppCompatImageView ivIcon;
     TextInputEditText etTitle;
-    AppCompatButton btnChooseColor;
-    AppCompatButton btnSave;
-    AppCompatButton btnUpdate;
-    TextView tvUUID;
+    MaterialButton btnChooseColor;
+    MaterialButton btnSave;
+    MaterialButton btnUpdate;
+
 
 
     @Override
@@ -86,7 +87,7 @@ public class CreateShoppingListFragment extends BaseFragment {
         btnChooseColor = view.findViewById(R.id.btn_choose_color_new_category);
         btnSave = view.findViewById(R.id.btn_save_new_category);
         btnUpdate = view.findViewById(R.id.btn_update_new_category);
-        tvUUID = view.findViewById(R.id.tvuuid);
+
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +100,7 @@ public class CreateShoppingListFragment extends BaseFragment {
                     goBackToMainFragment();
 
                 } else {
-                    Toast.makeText(requireContext(), "empty", Toast.LENGTH_LONG).show();
+                    displayToast(requireContext(),getString(R.string.fill_up_name));
                 }
             }
         });
@@ -114,7 +115,7 @@ public class CreateShoppingListFragment extends BaseFragment {
 
                     goBackToMainFragment();
                 }else{
-                    displayToast(requireContext(),"Please Fill up the List name!");
+                    displayToast(requireContext(),getString(R.string.fill_up_name));
                 }
 
 
@@ -152,7 +153,7 @@ public class CreateShoppingListFragment extends BaseFragment {
         ivIcon.setImageResource(getDataFromShoppingListFragment().getIcon());
         ivIcon.setColorFilter(getDataFromShoppingListFragment().getColor());
         mDefaultColor = getDataFromShoppingListFragment().getColor();
-        url = getDataFromShoppingListFragment().getIcon();
+        urlOfIcon = getDataFromShoppingListFragment().getIcon();
         Timber.e("UUID: %s", getDataFromShoppingListFragment().getId());
 
         List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
@@ -168,7 +169,7 @@ public class CreateShoppingListFragment extends BaseFragment {
 
 
     private void openColorPicker() {
-        mDefaultColor = ContextCompat.getColor(requireContext(), R.color.purple_200);
+        mDefaultColor = ContextCompat.getColor(requireContext(), R.color.brown_200);
         Timber.e("onOk: %s", mDefaultColor);
         AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(requireContext(), mDefaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -196,17 +197,17 @@ public class CreateShoppingListFragment extends BaseFragment {
                 int k = ran.nextInt(icons.length);
                 ivIcon.setImageResource(icons[k]);
                 ivIcon.setTag(icons[k]);
-                url = Integer.parseInt(ivIcon.getTag().toString());
-                Timber.e("onOk: %s", url);
+                urlOfIcon = Integer.parseInt(ivIcon.getTag().toString());
+                Timber.e("onOk: %s", urlOfIcon);
             }
         });
 
-        return url;
+        return urlOfIcon;
     }
 
 
     private void setupActionbar() {
-        setupBackButtonOnToolbar("Create a new List", true);
+        setupBackButtonOnToolbar(getString(R.string.create_a_new_list), true);
 
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override

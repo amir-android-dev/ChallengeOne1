@@ -36,7 +36,7 @@ public class ListServiceImpl implements ListService {
         return Utilities.listOfShoppingListsFromString(shoppingListInString);
     }
 
-    public void editShoppingList(String newUpdatedList) {
+    public void removeShoppingList(String newUpdatedList) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(SHARED_PREFERENCES_LIST);
         editor.putString(SHARED_PREFERENCES_LIST, newUpdatedList);
@@ -78,8 +78,6 @@ public class ListServiceImpl implements ListService {
                 ShoppingList shoppingList1 = new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor(), shoppingList.getCheckedEntries(), shoppingList.getUncheckedEntries());
                 Timber.tag("RAMOVE").e("HUURRAA");
                 lists.remove(shoppingList1);
-
-
             }
         }
     }
@@ -87,35 +85,67 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public void addEntry(UUID listId, String name) {
-        List<ShoppingList> lists = shoppingLists(SortOrder.Alphabetical);
 
-        for (ShoppingList shoppingList : lists) {
-            if (!listId.equals(shoppingList.getId()) && name.isEmpty()) {
-                Timber.tag("ID_OR_NAME").e("a proble, with id or name");
-            } else {
-                List<ShoppingListEntry> unchecked = new ArrayList<>();
-                List<ShoppingListEntry> checked = new ArrayList<>();
-                lists.add(new ShoppingList(shoppingList.getId(), shoppingList.getName(), shoppingList.getIcon(), shoppingList.getColor(), unchecked, checked));
+    }
+
+    public void mAddEntry(UUID listId, List<ShoppingListEntry> entriesUnChecked) {
+        editor = sharedPreferences.edit();
+        List<ShoppingList> listToUpdate = shoppingLists(ListService.SortOrder.Alphabetical);
+
+        for (ShoppingList shoppingList : listToUpdate) {
+            if (shoppingList.getId().equals(listId)) {
+                shoppingList.setUncheckedEntries(entriesUnChecked);
+                String shopToString = Utilities.listOfShoppingListsToString(listToUpdate);
+                editor.putString(SHARED_PREFERENCES_LIST, shopToString);
             }
         }
+        editor.commit();
+    }
 
+    public void mUncheckedEntry(UUID id,int row,List<ShoppingListEntry>entriesUnChecked,List<ShoppingListEntry>entriesChecked) {
+        List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
+        editor = sharedPreferences.edit();
+        for(ShoppingList shoppingList:list) {
+         //   if (shoppingList.getId().equals(id)) {
+                if (shoppingList.getId().equals(id)) {
+                    entriesUnChecked.remove(row);
+                    shoppingList.setUncheckedEntries(entriesUnChecked);
+                    shoppingList.setCheckedEntries(entriesChecked);
+                    String shopInString = Utilities.listOfShoppingListsToString(list);
+                    editor.putString(SHARED_PREFERENCES_LIST, shopInString);
+                }
+                editor.commit();
+            //}
+        }
+    }
+
+    public void mCheckedEntry(UUID id, int row,List<ShoppingListEntry>entriesUnChecked,List<ShoppingListEntry> entriesChecked) {
+        List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
+        editor = sharedPreferences.edit();
+        for(ShoppingList shoppingList:list) {
+          //  if (shoppingList.getId().equals(id)) {
+                if (shoppingList.getId().equals(id)) {
+                    entriesChecked.remove(row);
+                    shoppingList.setCheckedEntries(entriesChecked);
+                    shoppingList.setUncheckedEntries(entriesUnChecked);
+                    String shopInString = Utilities.listOfShoppingListsToString(list);
+                    editor.putString(SHARED_PREFERENCES_LIST, shopInString);
+                }
+                editor.commit();
+            //}
+        }
     }
 
 
     @Override
     public void checkEntry(UUID listId, int row) {
-
     }
 
     @Override
-    public void uncheckEntry(UUID listId, int row) {
-        editor = sharedPreferences.edit();
-
-    }
+    public void uncheckEntry(UUID listId, int row) {}
 
     @Override
     public void uncheckAllEntries(UUID listId) {
-
     }
 
     private void updatedShoppingLists(List<ShoppingList> shoppingLists) {

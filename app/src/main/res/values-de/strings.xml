@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="name_of_shopping_list">NAME DER EINKAUFSLISTE</string>
+    <string name="choose_a_color">Such eine Frabe aus</string>
+    <string name="save">SPEICHERN</string>
+    <string name="click_on_icon_to_change">CLICK UND SUCH ICON AUS</string>
+    <string name="edit">EDITIEREN</string>
+    <string name="delete">LÖCHEN</string>
+    <string name="sort_alphabetical">NACH ALPHABETS SORTIEREN</string>
+    <string name="sort_by_count">NACH DER ANZAHL SORTIEREN</string>
+    <string name="things_to_get">UNERLEDIGTE SACHEN</string>
+    <string name="already_bought_things">ERLEDIGET</string>
+    <string name="your_article">DEINE SACHEN</string>
+    <string name="cancel">CANCELN</string>
+    <string name="shopping_list">EINKAUFSLISTSE</string>
+    <string name="update">AKTUALLISIEREN</string>
+    <string name="edit_list">EDITIERE LIST</string>
+    <string name="yes">JA</string>
+    <string name="no">NEIN</string>
+
+    <string-array name="delete_and_edit">
+        <item>EDITIEREN</item>
+        <item>LÖCHEN</item>
+
+    </string-array>
+    <string name="create_a_new_list">ERSTELLE EINE LISTE</string>
+    <string name="are_you_sure">Bist Du sicher?</string>
+    <string name="fill_up_name">Bitte füll den Namen der Einkaufsliste aus!</string>
+</resources>

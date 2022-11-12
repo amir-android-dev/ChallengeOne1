@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,19 +18,22 @@
             android:id="@+id/tv_count_main_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="1"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_main_list_item"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:padding="10dp"
-            tools:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/tv_title_main_list_item"

@@ -8,12 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.MenuProvider;
 import androidx.lifecycle.Lifecycle;
@@ -122,16 +120,7 @@ public class MainShoppingListFragment extends BaseFragment {
                         navigateAndSendDataToCreateShoppingList(id, name, icon, color);
                         break;
                     case 1:
-                        List<ShoppingList> listToDelete = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-
-                        for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
-                            if (shoppingList.getId().equals(id))
-                                listToDelete.remove(shoppingList);
-                            String newList = Utilities.listOfShoppingListsToString(listToDelete);
-                            listService.editShoppingList(newList);
-                           shoppingListAdapter.getUpdateShoppingList(listToDelete);
-
-                        }
+                        alertDialogToDelete(id);
                         break;
                 }
             }
@@ -140,7 +129,43 @@ public class MainShoppingListFragment extends BaseFragment {
         builder.show();
     }
 
+    //this method is used inside of longClick to delete
+    //before deleting must a dialog be displayed
+    private void alertDialogToDelete(UUID id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.delete);
+        builder.setMessage(R.string.are_you_sure);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteAShoppingList(id);
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
+        builder.show();
 
+    }
+
+    //this method is called inside of alertdialog to delete in setPosetive
+    //the id is the id of shoppingList, which is send from shoppingListAdapter through callback
+    private void deleteAShoppingList(UUID id) {
+        List<ShoppingList> listToDelete = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+
+        for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
+            if (shoppingList.getId().equals(id))
+                listToDelete.remove(shoppingList);
+            String newList = Utilities.listOfShoppingListsToString(listToDelete);
+            listService.removeShoppingList(newList);
+            shoppingListAdapter.getUpdateShoppingList(listToDelete);
+        }
+    }
 
     private void setupActionBar() {
         setupBackButtonOnToolbar(getResources().getString(R.string.shopping_list), false);
@@ -151,19 +176,16 @@ public class MainShoppingListFragment extends BaseFragment {
                 menuInflater.inflate(R.menu.shopping_list_menu, menu);
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.N)
+
             @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
 
                 switch (menuItem.getItemId()) {
                     case R.id.action_sort_by_alphabet:
-                        displayToast(requireContext(), "alpha");
                         sortAlphabetical();
-                        // sortAlphabet();
                         return true;
                     case R.id.action_sort_by_count:
-                        displayToast(requireContext(), "count");
                         sortCount();
                         return true;
                 }
@@ -174,7 +196,7 @@ public class MainShoppingListFragment extends BaseFragment {
 
 
     void sortAlphabetical() {
-       List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+        List<ShoppingList> shoppingLists = listService.shoppingLists(ListService.SortOrder.Alphabetical);
         Collections.sort(shoppingLists, new Comparator<ShoppingList>() {
             @Override
             public int compare(ShoppingList o1, ShoppingList o2) {
@@ -204,14 +226,6 @@ public class MainShoppingListFragment extends BaseFragment {
 
         shoppingListAdapter.getUpdateShoppingList(shoppingLists);
     }
-
-        //Comparator to sort alphabetical
-    public static Comparator<ShoppingList> ShoppingListNameAZComparator = new Comparator<ShoppingList>() {
-        @Override
-        public int compare(ShoppingList shoppingList1, ShoppingList shoppingList2) {
-            return shoppingList1.getName().compareTo(shoppingList2.getName());
-        }
-    };
 
 
 

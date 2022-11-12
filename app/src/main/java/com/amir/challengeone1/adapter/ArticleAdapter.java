@@ -38,11 +38,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<MArticleViewHolder> {
         this.callBack = callBack;
     }
 
-    public ArticleAdapter(Context context, List<ShoppingListEntry> entryList) {
-        this.context = context;
-        this.entryList = entryList;
 
-    }
 
     @NonNull
     @Override
@@ -62,15 +58,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<MArticleViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && !entry.isChecked()) {
-
                     //set the isCheck function of object into true
                     entry.setChecked(true);
                     //when is checked send a new object of entry
                     callBack.articleIsChecked(entry);
-                    //        Toast.makeText(context, "checked", Toast.LENGTH_LONG).show();
 
-
-//                   notifyDataSetChanged();
                } else {
                     entry.setChecked(false);
                     callBack.articleIsChecked(entry);

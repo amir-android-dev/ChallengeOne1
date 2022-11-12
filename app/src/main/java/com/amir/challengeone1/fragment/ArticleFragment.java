@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.lifecycle.Lifecycle;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +29,7 @@ import android.widget.Button;
 import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
 import com.amir.challengeone1.adapter.ArticleAdapter;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tailoredapps.codingschool.challenge1.ListService;
@@ -92,7 +92,7 @@ public class ArticleFragment extends BaseFragment {
         setupAdapterForCheckedArticle();
         setupAdapterForUnCheckedArticle();
         setupActionbar();
-      //  sendUncheckedSize();
+        //  sendUncheckedSize();
 
 
     }
@@ -107,7 +107,7 @@ public class ArticleFragment extends BaseFragment {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog();
+                dialogToAddAnewEntry();
             }
         });
     }
@@ -118,13 +118,11 @@ public class ArticleFragment extends BaseFragment {
             @Override
             public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
                 for (int i = 0; i < entriesChecked.size(); i++) {
-                    if (!shoppingListEntry.isChecked()) {
-                        shoppingListEntry.setChecked(false);
+                    if (!shoppingListEntry.isChecked()&& shoppingListEntry.getId().equals(entriesChecked.get(i).getId())) {
                         entriesUnChecked.add(shoppingListEntry);
-                        entriesChecked.remove(i);
-//                        adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
-//                        adapterUnchecked.notifyItemRangeChanged(i, entriesUnChecked.size());
-//                        adapterChecked.notifyItemRemoved(i);
+                        shoppingListEntry.setChecked(false);
+                        listService.mCheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
+
                         runnableChecked(i);
 
                         break;
@@ -138,8 +136,76 @@ public class ArticleFragment extends BaseFragment {
 
     }
 
+    private void setupAdapterForUnCheckedArticle() {
+     //   List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
 
-//    private void setupAdapterForUnCheckedArticle() {
+        //  editor = sharedPreferences.edit();
+        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
+
+            @Override
+            public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
+                for (int i = 0; i < entriesUnChecked.size(); i++) {
+                    if (shoppingListEntry.isChecked() && shoppingListEntry.getId().equals(entriesUnChecked.get(i).getId())) {
+                        entriesChecked.add(shoppingListEntry);
+                        shoppingListEntry.setChecked(true);
+                        listService.mUncheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
+                        runnableUnchecked(i);
+                        break;
+
+                        //                        for(ShoppingList shoppingList:list){
+//                            if(shoppingList.getId().equals(getDataFromShoppingListInFragmentArticle().getId())){
+//                                entriesUnChecked.remove(i);
+//                                shoppingList.setUncheckedEntries(entriesUnChecked);
+//                                shoppingList.setCheckedEntries(entriesChecked);
+//                              String shopInString = Utilities.listOfShoppingListsToString(list);
+//                                editor.putString(SHARED_PREFERENCES_LIST,shopInString);
+//                            }
+//                            editor.commit();
+//
+//                        }
+
+                    }
+
+                }
+
+            }
+        });
+        rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        rvNotChecked.setAdapter(adapterUnchecked);
+    }
+
+
+    public void runnableUnchecked(int i) {
+        rvChecked.post(new Runnable() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void run() {
+                adapterUnchecked.notifyItemRemoved(i);
+//                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
+//                adapterUnchecked.notifyItemChanged(i);
+                //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
+                adapterChecked.notifyDataSetChanged();
+         //        adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
+
+            }
+        });
+    }
+
+    public void runnableChecked(int i) {
+        rvChecked.post(new Runnable() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void run() {
+                adapterChecked.notifyItemRemoved(i);
+                //    adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
+                //   adapterChecked.notifyItemChanged(i);
+                adapterChecked.notifyDataSetChanged();
+                //adapterUnchecked.notifyItemRangeChanged(i, entriesUnChecked.size());
+                 adapterUnchecked.notifyDataSetChanged();  //   it makes duplicate after removing
+            }
+        });
+    }
+    //    private void setupAdapterForUnCheckedArticle() {
 //        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
 //
 //            @Override
@@ -159,32 +225,6 @@ public class ArticleFragment extends BaseFragment {
 //        rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 //        rvNotChecked.setAdapter(adapterUnchecked);
 //    }
-
-    private void setupAdapterForUnCheckedArticle() {
-        List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
-
-            @Override
-            public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
-                for (int i = 0; i < entriesUnChecked.size(); i++) {
-                    if (shoppingListEntry.isChecked()) {
-                        entriesUnChecked.remove(i);
-                        shoppingListEntry.setChecked(true);
-                        entriesChecked.add(shoppingListEntry);
-                        runnableUnchecked(i);
-
-                        break;
-                    }
-
-
-                }
-            }
-        });
-        rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-        rvNotChecked.setAdapter(adapterUnchecked);
-    }
-
-
     private List<ShoppingListEntry> unChecked() {
         entriesUnChecked = new ArrayList<>();
 
@@ -217,18 +257,11 @@ public class ArticleFragment extends BaseFragment {
         color = getDataFromShoppingListInFragmentArticle().getColor();
     }
 
-//    private void sendUncheckedSize() {
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("SIZE", 5);
-//        Navigation.findNavController(requireView()).navigate(R.id.action_articleFragment_to_createShoppingListFragment, bundle);
-//
-//    }
 
-
-    void dialog() {
+    void dialogToAddAnewEntry() {
         TextInputEditText et;
-        Button btnCancel;
-        Button btnSave;
+        MaterialButton btnCancel;
+        MaterialButton btnSave;
 
         dialog.setContentView(R.layout.article_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -253,12 +286,11 @@ public class ArticleFragment extends BaseFragment {
                 if (name.isEmpty()) {
                     displayToast(requireContext(), "To save a new article please fill up the text field!");
                 } else {
-
-
                     shoppingListEntry = new ShoppingListEntry(UUID.randomUUID(), name, false);
                     entriesUnChecked.add(shoppingListEntry);
-                    addEntry();
-                    //    addList();
+                    listService.mAddEntry(getDataFromShoppingListInFragmentArticle().getId(), entriesUnChecked);
+                    //   addEntry();
+
                     displayToast(requireContext(), name);
 
                     dialog.dismiss();
@@ -270,23 +302,23 @@ public class ArticleFragment extends BaseFragment {
         dialog.show();
     }
 
-
-    private void addEntry() {
-
-        editor = sharedPreferences.edit();
-        List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-
-        for (ShoppingList shoppingList : listToUpdate) {
-            if (shoppingList.getId().equals(id)) {
-                shoppingList.setUncheckedEntries(entriesUnChecked);
-
-                String shopToString = Utilities.listOfShoppingListsToString(listToUpdate);
-                editor.putString(SHARED_PREFERENCES_LIST, shopToString);
-            }
-        }
-
-        editor.commit();
-    }
+//
+//    private void addEntry() {
+//
+//        editor = sharedPreferences.edit();
+//        List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+//
+//        for (ShoppingList shoppingList : listToUpdate) {
+//            if (shoppingList.getId().equals(id)) {
+//                shoppingList.setUncheckedEntries(entriesUnChecked);
+//
+//                String shopToString = Utilities.listOfShoppingListsToString(listToUpdate);
+//                editor.putString(SHARED_PREFERENCES_LIST, shopToString);
+//            }
+//        }
+//
+//        editor.commit();
+//    }
 
 
     private void setupActionbar() {
@@ -315,36 +347,7 @@ public class ArticleFragment extends BaseFragment {
     }
 
 
-    public void runnableUnchecked(int i) {
-        rvChecked.post(new Runnable() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void run() {
-                adapterUnchecked.notifyItemRemoved(i);
-//                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
-//                adapterUnchecked.notifyItemChanged(i);
-                //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
-                adapterChecked.notifyDataSetChanged();
-                // adapterUnchecked.notifyDataSetChanged();   some of checkbox are going to not be fill
 
-            }
-        });
-    }
-
-    public void runnableChecked(int i) {
-        rvChecked.post(new Runnable() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void run() {
-                adapterChecked.notifyItemRemoved(i);
-                //    adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
-                //   adapterChecked.notifyItemChanged(i);
-                adapterChecked.notifyDataSetChanged();
-                //adapterUnchecked.notifyItemRangeChanged(i, entriesUnChecked.size());
-                // adapterUnchecked.notifyDataSetChanged();     it makes duplicate after removing
-            }
-        });
-    }
 }
 
 class WrapContentLinearLayoutManager extends LinearLayoutManager {

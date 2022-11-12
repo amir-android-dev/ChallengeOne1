@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
+    android:padding="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.CreateShoppingListFragment">
 
@@ -18,6 +19,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_title_new_category"
             android:layout_width="match_parent"
+            android:maxLength="25"
+            android:maxLines="1"
             android:layout_height="match_parent"
             android:hint="@string/name_of_shopping_list" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -27,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/brown_900"
         app:cardCornerRadius="20sp"
         app:layout_constraintTop_toBottomOf="@id/tl_title">
 
@@ -48,23 +51,25 @@
                 tools:src="@drawable/ic_fitness_center_24"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_describe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/click_on_icon_to_change"
                 android:textStyle="bold"
+                android:textColor="@color/brown_100"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_icon_new_category" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_choose_color_new_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/brown_700"
                 android:layout_marginBottom="15dp"
                 android:text="@string/choose_a_color"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -76,28 +81,26 @@
     </androidx.cardview.widget.CardView>
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save_new_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:backgroundTint="@color/brown_700"
         android:text="@string/save"
         app:layout_constraintTop_toBottomOf="@id/cv" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_update_new_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:backgroundTint="@color/brown_700"
         android:layout_margin="10dp"
         android:text="@string/update"
         app:layout_constraintTop_toBottomOf="@id/cv" />
 
-    <TextView
-        android:id="@+id/tvuuid"
-        app:layout_constraintTop_toBottomOf="@id/btn_save_new_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
