@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public class BaseFragment extends Fragment {
 
+    //global
     public void displayToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
@@ -34,8 +35,6 @@ public class BaseFragment extends Fragment {
     }
 
 
-
-
     //create
     public CreateShoppingListFragmentArgs getDataFromShoppingListFragment() {
         return CreateShoppingListFragmentArgs.fromBundle(getArguments());
@@ -51,7 +50,6 @@ public class BaseFragment extends Fragment {
         NavDirections action = ArticleFragmentDirections.actionArticleFragmentToCreateShoppingListFragment(id, name, icon, color);
         Navigation.findNavController(requireView()).navigate(action);
     }
-
 
 
     public void goBackToMainFragment() {

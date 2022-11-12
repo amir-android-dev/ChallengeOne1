@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuProvider;
@@ -22,8 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.amir.challengeone1.ListServiceImpl;
 import com.amir.challengeone1.R;
 import com.google.android.material.button.MaterialButton;
@@ -53,7 +51,6 @@ public class CreateShoppingListFragment extends BaseFragment {
     MaterialButton btnUpdate;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +62,8 @@ public class CreateShoppingListFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_create_shopping_list, container, false);
     }
 
@@ -89,7 +85,6 @@ public class CreateShoppingListFragment extends BaseFragment {
         btnUpdate = view.findViewById(R.id.btn_update_new_category);
 
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +95,7 @@ public class CreateShoppingListFragment extends BaseFragment {
                     goBackToMainFragment();
 
                 } else {
-                    displayToast(requireContext(),getString(R.string.fill_up_name));
+                    displayToast(requireContext(), getString(R.string.fill_up_name));
                 }
             }
         });
@@ -110,30 +105,14 @@ public class CreateShoppingListFragment extends BaseFragment {
             public void onClick(View v) {
                 if (!etTitle.getText().toString().isEmpty()) {
                     listService.changeName(getDataFromShoppingListFragment().getId(), etTitle.getText().toString());
-                    listService.changeIcon(getDataFromShoppingListFragment().getId(),randomIcon());
-                    listService.changeColor(getDataFromShoppingListFragment().getId(),mDefaultColor);
+                    listService.changeIcon(getDataFromShoppingListFragment().getId(), randomIcon());
+                    listService.changeColor(getDataFromShoppingListFragment().getId(), mDefaultColor);
 
                     goBackToMainFragment();
-                }else{
-                    displayToast(requireContext(),getString(R.string.fill_up_name));
+                } else {
+                    displayToast(requireContext(), getString(R.string.fill_up_name));
                 }
 
-
-//                UUID id = getDataFromShoppingListFragment().getId();
-//                List<ShoppingList> listToUpdate = listService.shoppingLists(ListService.SortOrder.Alphabetical);
-//
-//                for (ShoppingList shoppingList : listService.shoppingLists(ListService.SortOrder.Alphabetical)) {
-//                    if (shoppingList.getId().equals(id)) {
-//                        displayToast(requireContext(), "update");
-//
-//                        listToUpdate.remove(shoppingList);
-//
-//                        String newList = Utilities.listOfShoppingListsToString(listToUpdate);
-//                        listService.editShoppingList(newList);
-//                        goBackToMainFragment();
-//                    }
-//                }
-//                listService.add(etTitle.getText().toString(), randomIcon(), mDefaultColor);
             }
         });
 
@@ -144,7 +123,6 @@ public class CreateShoppingListFragment extends BaseFragment {
             }
         });
     }
-
 
 
     private void getAndSetDataFromMainShoppingListFragment() {
@@ -165,7 +143,6 @@ public class CreateShoppingListFragment extends BaseFragment {
             }
         }
     }
-
 
 
     private void openColorPicker() {
@@ -207,7 +184,13 @@ public class CreateShoppingListFragment extends BaseFragment {
 
 
     private void setupActionbar() {
-        setupBackButtonOnToolbar(getString(R.string.create_a_new_list), true);
+
+        if (getDataFromShoppingListFragment().getName().isEmpty()) {
+            setupBackButtonOnToolbar(getString(R.string.create_a_new_list), true);
+        } else {
+            setupBackButtonOnToolbar(    getResources().getString(R.string.edit)+ "  " + getDataFromShoppingListFragment().getName(), true);
+        }
+
 
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override

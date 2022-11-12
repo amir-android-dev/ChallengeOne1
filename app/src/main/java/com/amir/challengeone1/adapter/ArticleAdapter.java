@@ -76,6 +76,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<MArticleViewHolder> {
     public void getUpdateEntry(List<ShoppingListEntry> entries) {
         entryList = entries;
 
+
     }
 
 

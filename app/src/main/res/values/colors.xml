@@ -8,11 +8,28 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="brown_200">#99582a</color>
-    <color name="brown_700">#432818</color>
-    <color name="brown_300">#bb9457</color>
-    <color name="brown_100">#ffe6a7</color>
-    <color name="brown_900">#6f1d1b</color>
+    <color name="brown_200">#457b9d</color>
+
+    <color name="blue_100">#a9d6e5</color>
+    <color name="blue_200">#89c2d9</color>
+    <color name="blue_900">#012a4a</color>
+    <color name="blue_800">#013a63</color>
+    <color name="blue_700">#01497c</color>
+    <color name="brown_600">#014f86</color>
+    <color name="brown_500">#2a6f97</color>
+
+<!--        <color name="brown_200">#457b9d</color>
+    <color name="blue">#03045e</color>
+    <color name="blue_900">#012a4a</color>
+    <color name="blue_800">#013a63</color>
+    <color name="blue_700">#01497c</color>
+    <color name="blue_600">#014f86</color>
+    <color name="blue_500">#2a6f97</color>
+    <color name="blue_400">#2c7da0</color>
+    <color name="blue_300">#61a5c2</color>
+    <color name="blue_200">#89c2d9</color>
+    <color name="blue_100">#a9d6e5</color>-->
+
 
     <color name="gray">#A3A0B2</color>
 </resources>

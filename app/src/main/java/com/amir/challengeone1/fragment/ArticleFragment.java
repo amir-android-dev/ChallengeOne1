@@ -117,13 +117,21 @@ public class ArticleFragment extends BaseFragment {
         adapterChecked = new ArticleAdapter(requireContext(), checked(), new ArticleAdapter.CallBack() {
             @Override
             public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
-                for (int i = 0; i < entriesChecked.size(); i++) {
-                    if (!shoppingListEntry.isChecked()&& shoppingListEntry.getId().equals(entriesChecked.get(i).getId())) {
-                        entriesUnChecked.add(shoppingListEntry);
-                        shoppingListEntry.setChecked(false);
-                        listService.mCheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
 
-                        runnableChecked(i);
+                unChecked().add(shoppingListEntry);
+                checked().remove(shoppingListEntry);
+                shoppingListEntry.setChecked(false);
+
+                for (int i = 0; i < entriesChecked.size(); i++) {
+                    if (!shoppingListEntry.isChecked() && shoppingListEntry.getId().equals(entriesChecked.get(i).getId())) {
+//                        entriesUnChecked.add(shoppingListEntry);
+//                        shoppingListEntry.setChecked(false);
+                        // shoppingListEntry.setChecked(false);
+                        listService.mCheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
+                        adapterChecked.getUpdateEntry(entriesChecked);
+                        adapterUnchecked.getUpdateEntry(entriesUnChecked);
+                        runnableUnchecked();
+                      //  runnableChecked(i);
 
                         break;
                     }
@@ -137,19 +145,27 @@ public class ArticleFragment extends BaseFragment {
     }
 
     private void setupAdapterForUnCheckedArticle() {
-     //   List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
+        //   List<ShoppingList> list = listService.shoppingLists(ListService.SortOrder.Alphabetical);
 
         //  editor = sharedPreferences.edit();
         adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
 
             @Override
             public void articleIsChecked(ShoppingListEntry shoppingListEntry) {
+
+                shoppingListEntry.setChecked(true);
+                checked().add(shoppingListEntry);
+                unChecked().remove(shoppingListEntry);
+
                 for (int i = 0; i < entriesUnChecked.size(); i++) {
                     if (shoppingListEntry.isChecked() && shoppingListEntry.getId().equals(entriesUnChecked.get(i).getId())) {
-                        entriesChecked.add(shoppingListEntry);
-                        shoppingListEntry.setChecked(true);
+//                        entriesChecked.add(shoppingListEntry);
+//                        shoppingListEntry.setChecked(true);
                         listService.mUncheckedEntry(getDataFromShoppingListInFragmentArticle().getId(), i, entriesUnChecked, entriesChecked);
-                        runnableUnchecked(i);
+                        adapterUnchecked.getUpdateEntry(entriesUnChecked);
+                        adapterChecked.getUpdateEntry(entriesChecked);
+
+                        runnableUnchecked();
                         break;
 
                         //                        for(ShoppingList shoppingList:list){
@@ -173,23 +189,37 @@ public class ArticleFragment extends BaseFragment {
         rvNotChecked.setLayoutManager(new WrapContentLinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         rvNotChecked.setAdapter(adapterUnchecked);
     }
-
-
-    public void runnableUnchecked(int i) {
+    public void runnableUnchecked() {
         rvChecked.post(new Runnable() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void run() {
-                adapterUnchecked.notifyItemRemoved(i);
+
 //                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
 //                adapterUnchecked.notifyItemChanged(i);
                 //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
                 adapterChecked.notifyDataSetChanged();
-         //        adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
+                adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
 
             }
         });
     }
+
+//    public void runnableUnchecked(int i) {
+//        rvChecked.post(new Runnable() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void run() {
+//                adapterUnchecked.notifyItemRemoved(i);
+////                adapterUnchecked.notifyItemRangeChanged(0, entriesUnChecked.size());
+////                adapterUnchecked.notifyItemChanged(i);
+//                //adapterChecked.notifyItemRangeChanged(i, entriesChecked.size());
+//                adapterChecked.notifyDataSetChanged();
+//                //        adapterUnchecked.notifyDataSetChanged(); //  some of checkbox are going to not be fill
+//
+//            }
+//        });
+//    }
 
     public void runnableChecked(int i) {
         rvChecked.post(new Runnable() {
@@ -201,10 +231,11 @@ public class ArticleFragment extends BaseFragment {
                 //   adapterChecked.notifyItemChanged(i);
                 adapterChecked.notifyDataSetChanged();
                 //adapterUnchecked.notifyItemRangeChanged(i, entriesUnChecked.size());
-                 adapterUnchecked.notifyDataSetChanged();  //   it makes duplicate after removing
+                adapterUnchecked.notifyDataSetChanged();  //   it makes duplicate after removing
             }
         });
     }
+
     //    private void setupAdapterForUnCheckedArticle() {
 //        adapterUnchecked = new ArticleAdapter(requireContext(), unChecked(), new ArticleAdapter.CallBack() {
 //
@@ -345,7 +376,6 @@ public class ArticleFragment extends BaseFragment {
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
-
 
 
 }

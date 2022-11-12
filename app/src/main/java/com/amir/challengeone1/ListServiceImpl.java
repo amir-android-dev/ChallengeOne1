@@ -106,7 +106,7 @@ public class ListServiceImpl implements ListService {
         List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
         editor = sharedPreferences.edit();
         for(ShoppingList shoppingList:list) {
-         //   if (shoppingList.getId().equals(id)) {
+            if (shoppingList.getId().equals(id)) {
                 if (shoppingList.getId().equals(id)) {
                     entriesUnChecked.remove(row);
                     shoppingList.setUncheckedEntries(entriesUnChecked);
@@ -115,7 +115,7 @@ public class ListServiceImpl implements ListService {
                     editor.putString(SHARED_PREFERENCES_LIST, shopInString);
                 }
                 editor.commit();
-            //}
+            }
         }
     }
 
@@ -123,7 +123,7 @@ public class ListServiceImpl implements ListService {
         List<ShoppingList> list = shoppingLists(ListService.SortOrder.Alphabetical);
         editor = sharedPreferences.edit();
         for(ShoppingList shoppingList:list) {
-          //  if (shoppingList.getId().equals(id)) {
+            if (shoppingList.getId().equals(id)) {
                 if (shoppingList.getId().equals(id)) {
                     entriesChecked.remove(row);
                     shoppingList.setCheckedEntries(entriesChecked);
@@ -132,7 +132,7 @@ public class ListServiceImpl implements ListService {
                     editor.putString(SHARED_PREFERENCES_LIST, shopInString);
                 }
                 editor.commit();
-            //}
+            }
         }
     }
 
